@@ -1,0 +1,3 @@
+name = Conversation
+description = Stores Eva conversation data in MongoDB.
+version = 0.1.0
