@@ -46,7 +46,7 @@ def pre_interaction(context):
 def interaction(context):
     # Allow potential follow-up queries to be handled first (hence high priority).
     plugin = context.conversation.follow_up_plugin
-    gossip.trigger('eva.conversation.follow_up', plugin=plugin, context=context)
+    gossip.trigger('eva.conversations.follow_up', plugin=plugin, context=context)
 
 @gossip.register('eva.post_interaction', provides=['conversations'])
 def post_interaction(context):
