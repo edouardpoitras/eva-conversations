@@ -34,6 +34,15 @@ It can also be accessed in a new trigger fired for follow-up queries/commands (s
 
 #### Triggers
 
+`gossip.trigger('eva.conversations.pre_new_conversation')`
+
+This trigger is fired right before creating a new conversation.
+
+`gossip.trigger('eva.conversations.post_new_conversation')`
+
+This trigger is fired immediately after creating a new conversation.
+If you call the `conversation` plugin's `get_current_conversation()` function at this point, you will get the new conversation that has just been created.
+
 `gossip.trigger('eva.conversations.follow_up')`
 
 This trigger is called at the very beginning of the interaction phase (priority of 100), and allows plugins to take a first stab at responding to the user.
@@ -47,6 +56,7 @@ Here's a simple example that will tell the user when the current conversation be
 def interaction(plugin, context):
     # If this is a follow-up question for the 'my_plugin' plugin.
     if plugin == 'my_plugin':
+        # Make sure the user's query/command contains the word 'conversation' and either 'opened' or 'started'.
         if context.contains('conversation') && \
         (context.contains('opened') or context.contains('started')):
             context.set_output_text('This conversation started at %s' %context.conversation.opened)
@@ -54,6 +64,34 @@ def interaction(plugin, context):
 
 The plugin parameter in this trigger is populated with the plugin id of the plugin that last used the `context.set_output_text()` method.
 This means the same plugin will most likely receive another opportunity for a follow-up until the conversation expires, or a plugin explicitly closes the conversation.
+
+`gossip.trigger('eva.conversations.pre_close_interaction', context=context)`
+
+A trigger that get fired when the current `Interaction` object's `close()` method is executed. We're in the process of wrapping up the interaction.
+
+At this point the `Interaction` object's `output_audio` and `closed` fields are not set. Use the `eva.conversations.post_close_interaction` if you require access to those values.
+
+`gossip.trigger('eva.conversations.post_close_interaction', context=context)`
+
+A trigger that get fired when the current `Interaction` object's `close()` method is done executing. All interaction fields should now be populated, and the conversation will have been saved.
+
+`gossip.trigger('eva.conversations.pre_create_interaction', context=context)`
+
+A trigger that gets fired right before creating the new `Interaction` object for the active interaction with Eva.
+
+`gossip.trigger('eva.conversations.post_create_interaction', context=context)`
+
+This trigger is fired once the `Interaction` object is created. It will execute at the very end of the `eva.pre_interaction` trigger (where `conversations` plugin create the interaction).
+
+`gossip.trigger('eva.conversations.pre_close_conversation')`
+
+Trigger that is fired right before closing the current conversation.
+The `Conversation` object's `closed` field is not yet set at this point.
+
+`gossip.trigger('eva.conversations.post_close_conversation')`
+
+Trigger that is fired right after closing the current conversation.
+The `Conversation` object should be saved and have all populated fields at this point.
 
 #### Objects
 
