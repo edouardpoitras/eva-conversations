@@ -53,9 +53,9 @@ Here's a simple example that will tell the user when the current conversation be
 
 ```python
 @gossip.register('eva.conversations.follow_up')
-def interaction(plugin, context):
+def interaction(plugin_id, context):
     # If this is a follow-up question for the 'my_plugin' plugin.
-    if plugin == 'my_plugin':
+    if plugin_id == 'my_plugin':
         # Make sure the user's query/command contains the word 'conversation' and either 'opened' or 'started'.
         if context.contains('conversation') && \
         (context.contains('opened') or context.contains('started')):
