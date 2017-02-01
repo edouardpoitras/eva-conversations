@@ -131,7 +131,7 @@ Each TextAlteration object is a mongoengine.EmbeddedDocument object with the fol
 
 ```python
 new_text = mongoengine.fields.StringField() # The new text that replaced the old interaction text.
-plugin = mongoengine.fields.StringField() # The plugin that performed the text alteration.
+plugin_id = mongoengine.fields.StringField() # The plugin that performed the text alteration.
 ```
 
 Please check out the [mongoengine documentation](http://docs.mongoengine.org/) for more details on these object types.
